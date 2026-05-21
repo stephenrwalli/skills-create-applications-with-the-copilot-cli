@@ -7,6 +7,8 @@
 // - mul: multiplication
 // - div: division
 
+const calc = require('./lib/calculator');
+
 const [,, op, aStr, bStr] = process.argv;
 
 function usage() {
@@ -26,28 +28,27 @@ if (Number.isNaN(a) || Number.isNaN(b)) {
   process.exit(1);
 }
 
-let result;
-switch (op) {
-  case 'add': // addition
-    result = a + b;
-    break;
-  case 'sub': // subtraction
-    result = a - b;
-    break;
-  case 'mul': // multiplication
-    result = a * b;
-    break;
-  case 'div': // division
-    if (b === 0) {
-      console.error('Error: division by zero');
-      process.exit(2);
-    }
-    result = a / b;
-    break;
-  default:
-    console.error(`Unknown operation: ${op}`);
-    usage();
+try {
+  let result;
+  switch (op) {
+    case 'add':
+      result = calc.add(a, b);
+      break;
+    case 'sub':
+      result = calc.sub(a, b);
+      break;
+    case 'mul':
+      result = calc.mul(a, b);
+      break;
+    case 'div':
+      result = calc.div(a, b);
+      break;
+    default:
+      console.error(`Unknown operation: ${op}`);
+      usage();
+  }
+  console.log(result);
+} catch (err) {
+  console.error('Error:', err.message);
+  process.exit(2);
 }
-
-// Print concise result
-console.log(result);
